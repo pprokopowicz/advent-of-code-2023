@@ -13,3 +13,7 @@ To run a solution for a selected day run:
 ```console
 foo@bar:~$ cargo run -p day<day_number>
 ```
+
+## Days
+
+- [01 - Trebuchet?!](crates/day01)
