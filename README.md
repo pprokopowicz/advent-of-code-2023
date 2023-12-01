@@ -1,4 +1,4 @@
-# Advent of Code 2022
+# Advent of Code 2023
 
 My Rust project in which I try to solve [Advent of Code 2023](https://adventofcode.com/2023/) problems.
 
