@@ -1,12 +1,19 @@
+use std::collections::HashMap;
+
+#[derive(PartialEq, Hash, Eq, Debug)]
+struct Coordinate {
+    x: usize,
+    y: usize,
+}
+
 pub fn solve(input: &String) {
     let parsed_input = parse(input);
     let result = parsed_input.iter().sum::<usize>();
-    println!("Part 1 solution: {}", result);
+    println!("Part 2 solution: {}", result);
 }
 
 fn parse(input: &String) -> Vec<usize> {
     const DIGITS: [char; 10] = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
-    const NOT_SYMBOLS: [char; 11] = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.'];
 
     let contents = input;
     let lines = &contents.lines().collect::<Vec<&str>>();
@@ -18,13 +25,13 @@ fn parse(input: &String) -> Vec<usize> {
     let max_y = lines.iter().count() - 1;
     let max_x = lines[0].chars().count() - 1;
 
-    let mut output: Vec<usize> = vec![];
+    let mut map: HashMap<Coordinate, Vec<usize>> = HashMap::new();
 
     for y_index in 0..lines.iter().count() {
         let line = lines[y_index];
         let mut it = line.char_indices();
 
-        'outer: while let Some((index, c)) = it.next() {
+        while let Some((index, c)) = it.next() {
             if !DIGITS.contains(&c) {
                 continue;
             }
@@ -52,16 +59,32 @@ fn parse(input: &String) -> Vec<usize> {
                 }
             }
 
-            if start_index > 0 && !NOT_SYMBOLS.contains(&char_vec[y_index][start_index - 1]) {
+            if start_index > 0 && char_vec[y_index][start_index - 1] == '*' {
                 let num = line[start_index..end_index].parse::<usize>().unwrap();
-                output.push(num);
-                continue 'outer;
+                let coordinate = Coordinate {
+                    x: start_index - 1,
+                    y: y_index,
+                };
+                let mut values = match map.get(&coordinate) {
+                    Option::Some(nums) => nums.clone(),
+                    Option::None => vec![],
+                };
+                values.push(num);
+                map.insert(coordinate, values);
             }
 
-            if end_index < max_x && !NOT_SYMBOLS.contains(&char_vec[y_index][end_index]) {
+            if end_index < max_x && char_vec[y_index][end_index] == '*' {
                 let num = line[start_index..end_index].parse::<usize>().unwrap();
-                output.push(num);
-                continue 'outer;
+                let coordinate = Coordinate {
+                    x: end_index,
+                    y: y_index,
+                };
+                let mut values = match map.get(&coordinate) {
+                    Option::Some(nums) => nums.clone(),
+                    Option::None => vec![],
+                };
+                values.push(num);
+                map.insert(coordinate, values);
             }
 
             if y_index > 0 {
@@ -73,10 +96,18 @@ fn parse(input: &String) -> Vec<usize> {
                 };
 
                 for index in start..end {
-                    if !NOT_SYMBOLS.contains(&char_vec[y_index - 1][index]) {
+                    if char_vec[y_index - 1][index] == '*' {
                         let num = line[start_index..end_index].parse::<usize>().unwrap();
-                        output.push(num);
-                        continue 'outer;
+                        let coordinate = Coordinate {
+                            x: index,
+                            y: y_index - 1,
+                        };
+                        let mut values = match map.get(&coordinate) {
+                            Option::Some(nums) => nums.clone(),
+                            Option::None => vec![],
+                        };
+                        values.push(num);
+                        map.insert(coordinate, values);
                     }
                 }
             }
@@ -90,15 +121,30 @@ fn parse(input: &String) -> Vec<usize> {
                 };
 
                 for index in start..end {
-                    if !NOT_SYMBOLS.contains(&char_vec[y_index + 1][index]) {
+                    if char_vec[y_index + 1][index] == '*' {
                         let num = line[start_index..end_index].parse::<usize>().unwrap();
-                        output.push(num);
-                        continue 'outer;
+                        let coordinate = Coordinate {
+                            x: index,
+                            y: y_index + 1,
+                        };
+                        let mut values = match map.get(&coordinate) {
+                            Option::Some(nums) => nums.clone(),
+                            Option::None => vec![],
+                        };
+                        values.push(num);
+                        map.insert(coordinate, values);
                     }
                 }
             }
         }
     }
 
-    output
+    map.iter()
+        .filter_map(|(_, values)| {
+            if values.len() == 2 {
+                return Option::Some(values[0] * values[1]);
+            }
+            Option::None
+        })
+        .collect::<Vec<usize>>()
 }

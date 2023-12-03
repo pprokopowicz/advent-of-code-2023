@@ -1,9 +1,11 @@
-mod parser;
 mod part1;
+mod part2;
+
+use reader::{read_file, File};
 
 fn main() {
-    let input = parser::parse();
+    let input = read_file(File::Day03);
 
-    // input.iter().for_each(|num| println!("{:?}", num));
     part1::solve(&input);
+    part2::solve(&input);
 }
