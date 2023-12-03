@@ -3,6 +3,7 @@ use std::fs;
 pub enum File {
     Day01 = 1,
     Day02,
+    Day03,
 }
 
 fn file_name(file: File) -> String {

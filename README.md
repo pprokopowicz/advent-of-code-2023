@@ -18,3 +18,4 @@ foo@bar:~$ cargo run -p day<day_number>
 
 - [01 - Trebuchet?!](crates/day01)
 - [02 - Cube Conundrum](crates/day02)
+- [03 - Gear Ratios](crates/day03)
