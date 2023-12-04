@@ -2,6 +2,7 @@ use crate::model::Card;
 
 pub fn solve(input: &Vec<Card>) {
     const POW_BASE: usize = 2;
+
     let result = input
         .iter()
         .map(|card| {
