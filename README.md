@@ -21,3 +21,8 @@ foo@bar:~$ cargo run -p day<day_number>
 - [03 - Gear Ratios](crates/day03)
 - [04 - Scratchcards](crates/day04)
 - [05 - If You Give A Seed A Fertilizer](crates/day05)
+
+## Crates
+
+Here is the list of crates used in this project:
+- [rayon](https://github.com/rayon-rs/rayon)
