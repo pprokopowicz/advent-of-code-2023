@@ -19,5 +19,5 @@ pub fn solve(seeds: &Vec<usize>, maps: &Vec<GardeningMap>) {
         .min()
         .unwrap();
 
-    println!("Part 1 solution: {}", result);
+    println!("Part 2 solution: {}", result);
 }
