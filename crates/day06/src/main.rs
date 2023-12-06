@@ -1,9 +1,12 @@
 mod model;
 mod parser;
 mod part1;
+mod part2;
+mod solver;
 
 fn main() {
-    let input = parser::parse();
+    let (times, distances) = parser::parse();
 
-    part1::solve(&input);
+    part1::solve(&times, &distances);
+    part2::solve(&times, &distances);
 }
