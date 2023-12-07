@@ -22,6 +22,7 @@ foo@bar:~$ cargo run -p day<day_number>
 - [04 - Scratchcards](crates/day04)
 - [05 - If You Give A Seed A Fertilizer](crates/day05)
 - [06 - Wait For It](crates/day06)
+- [07 - Camel Cards](crates/day07)
 
 ## Crates
 
