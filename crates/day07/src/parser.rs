@@ -1,7 +1,3 @@
-use std::{cmp::Ordering, collections::HashMap};
-
-use reader::{read_file, File};
-
 use crate::model::{Game, HandType};
 
 pub fn parse<F>(contents: &String, mapper: F) -> Vec<Game>

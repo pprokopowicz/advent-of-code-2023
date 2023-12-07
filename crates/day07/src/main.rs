@@ -1,12 +1,10 @@
-use std::{cmp::Ordering, collections::HashMap};
-
-use model::HandType;
 use reader::{read_file, File};
 
 mod model;
 mod parser;
 mod part1;
 mod part2;
+mod solver;
 
 fn main() {
     let contents = read_file(File::Day07);
