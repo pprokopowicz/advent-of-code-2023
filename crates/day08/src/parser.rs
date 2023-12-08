@@ -16,9 +16,8 @@ pub fn parse<'a>() -> (Vec<Instruction>, Vec<Node>) {
         })
         .collect::<Vec<Instruction>>();
 
-    _ = lines.next();
-
     let nodes = lines
+        .skip(1)
         .map(|line| {
             let mut split = line.split(" = ");
             let current = split.next().unwrap().to_string();

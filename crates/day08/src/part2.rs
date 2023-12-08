@@ -37,4 +37,4 @@ fn gcd(m: usize, n: usize) -> usize {
     }
 
     n
- }
+}
