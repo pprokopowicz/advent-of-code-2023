@@ -24,6 +24,7 @@ foo@bar:~$ cargo run -p day<day_number>
 - [06 - Wait For It](crates/day06)
 - [07 - Camel Cards](crates/day07)
 - [08 - Haunted Wasteland](crates/day08)
+- [09 - Mirage Maintenance](crates/day09)
 
 ## Crates
 
