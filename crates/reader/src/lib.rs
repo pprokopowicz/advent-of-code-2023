@@ -9,6 +9,7 @@ pub enum File {
     Day06,
     Day07,
     Day08,
+    Day09,
 }
 
 fn file_name(file: File) -> String {
