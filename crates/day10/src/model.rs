@@ -1,5 +1,17 @@
-#[derive(Debug, PartialEq)]
-pub enum Point {
+#[derive(Debug, Clone)]
+pub struct Point {
+    pub pipe: Pipe,
+    pub is_in_loop: bool,
+}
+
+impl Point {
+    pub fn new(pipe: Pipe, is_in_loop: bool) -> Point {
+        Point { pipe, is_in_loop }
+    }
+}
+
+#[derive(Debug, PartialEq, Clone)]
+pub enum Pipe {
     Vertical,
     Horizontal,
     NorthEast,
@@ -10,17 +22,17 @@ pub enum Point {
     Start,
 }
 
-impl Point {
-    pub fn new(value: &char) -> Point {
+impl Pipe {
+    pub fn new(value: &char) -> Pipe {
         match value {
-            '|' => Point::Vertical,
-            '-' => Point::Horizontal,
-            'L' => Point::NorthEast,
-            'J' => Point::NorthWest,
-            '7' => Point::SouthWest,
-            'F' => Point::SouthEast,
-            '.' => Point::Ground,
-            'S' => Point::Start,
+            '|' => Pipe::Vertical,
+            '-' => Pipe::Horizontal,
+            'L' => Pipe::NorthEast,
+            'J' => Pipe::NorthWest,
+            '7' => Pipe::SouthWest,
+            'F' => Pipe::SouthEast,
+            '.' => Pipe::Ground,
+            'S' => Pipe::Start,
             _ => panic!("Unknown point!"),
         }
     }
