@@ -31,4 +31,5 @@ foo@bar:~$ cargo run -p day<day_number>
 ## Crates
 
 Here is the list of crates used in this project:
+- [pathfinding](https://github.com/evenfurther/pathfinding)
 - [rayon](https://github.com/rayon-rs/rayon)
