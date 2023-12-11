@@ -1,74 +1,55 @@
 use crate::model::{Coordinate, Point, UniverseImage};
-use pathfinding::prelude::bfs;
-use rayon::prelude::*;
 
 pub fn solve(input: &UniverseImage, expansion_size: usize) -> usize {
-    let mut result = 0;
     let galaxy_coordinates = galaxy_coordinates(&input.map);
+    let mut galaxies_to_left = galaxy_coordinates.to_vec();
 
-    let mut galaxies_to_find = galaxy_coordinates.to_vec();
+    let result = galaxy_coordinates
+        .iter()
+        .map(|first_galaxy| {
+            galaxies_to_left.remove(0);
 
-    for coordinate in galaxy_coordinates {
-        galaxies_to_find.remove(0);
-
-        let sum: usize = galaxies_to_find
-            .par_iter()
-            .filter_map(|to_find| {
-                let path = bfs(
-                    &coordinate,
-                    |coordinate| successors(&coordinate, &input.map),
-                    |coordinate| coordinate == to_find,
-                )?;
-
-                let sum = path
-                    .iter()
-                    .map(|coordinate| {
-                        let mut step = 0;
-
-                        if input.horizontal_lines.contains(&coordinate.y) {
-                            step += expansion_size - 1;
-                        }
-
-                        if input.vertical_lines.contains(&coordinate.x) {
-                            step += expansion_size - 1;
-                        }
-
-                        step
-                    })
-                    .sum::<usize>()
-                    + path.len()
-                    - 1;
-
-                Option::Some(sum)
-            })
-            .sum();
-
-        result += sum;
-    }
+            galaxies_to_left
+                .iter()
+                .map(|second_galaxy| distance(&first_galaxy, second_galaxy, input, &expansion_size))
+                .sum::<usize>()
+        })
+        .sum::<usize>();
 
     result
 }
 
-fn successors(coordiante: &Coordinate, input: &Vec<Vec<Point>>) -> Vec<Coordinate> {
-    let mut output = vec![];
+fn distance(
+    galaxy0: &Coordinate,
+    galaxy1: &Coordinate,
+    image: &UniverseImage,
+    expansion_size: &usize,
+) -> usize {
+    let start_y = galaxy0.y.min(galaxy1.y);
+    let end_y = galaxy0.y.max(galaxy1.y);
+    let start_x = galaxy0.x.min(galaxy1.x);
+    let end_x = galaxy0.x.max(galaxy1.x);
 
-    if coordiante.y > 0 {
-        output.push(Coordinate::new(coordiante.x, coordiante.y - 1));
-    }
+    let y_sum = (start_y..end_y)
+        .map(|y| {
+            if image.horizontal_lines.contains(&y) {
+                expansion_size
+            } else {
+                &1
+            }
+        })
+        .sum::<usize>();
+    let x_sum = (start_x..end_x)
+        .map(|x| {
+            if image.vertical_lines.contains(&x) {
+                expansion_size
+            } else {
+                &1
+            }
+        })
+        .sum::<usize>();
 
-    if coordiante.y < input.len() - 1 {
-        output.push(Coordinate::new(coordiante.x, coordiante.y + 1));
-    }
-
-    if coordiante.x > 0 {
-        output.push(Coordinate::new(coordiante.x - 1, coordiante.y));
-    }
-
-    if coordiante.x < input[coordiante.y].len() - 1 {
-        output.push(Coordinate::new(coordiante.x + 1, coordiante.y));
-    }
-
-    output
+    y_sum + x_sum
 }
 
 fn galaxy_coordinates(input: &Vec<Vec<Point>>) -> Vec<Coordinate> {
