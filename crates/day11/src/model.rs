@@ -25,3 +25,10 @@ impl Coordinate {
         Coordinate { x, y }
     }
 }
+
+#[derive(Debug)]
+pub struct UniverseImage {
+    pub map: Vec<Vec<Point>>,
+    pub horizontal_lines: Vec<usize>,
+    pub vertical_lines: Vec<usize>,
+}

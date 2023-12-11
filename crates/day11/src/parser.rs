@@ -1,56 +1,51 @@
 use reader::{read_file, File};
 
-use crate::model::Point;
+use crate::model::{Point, UniverseImage};
 
-pub fn parse() -> Vec<Vec<Point>> {
+pub fn parse() -> UniverseImage {
     let contents = read_file(File::Day11);
 
-    let mut mapped = contents
+    let map = contents
         .lines()
         .map(|line| line.chars().map(|c| Point::new(&c)).collect::<Vec<Point>>())
         .collect::<Vec<Vec<Point>>>();
 
-    expand_vertical_lines(&mut mapped);
-    expand_horizontal_lines(&mut mapped);
+    let vertical_lines = vertical_lines(&map);
+    let horizontal_lines = horizontal_lines(&map);
 
-    mapped
-}
-
-fn expand_vertical_lines(map: &mut Vec<Vec<Point>>) {
-    let horizontal_len = map[0].len();
-    let mut expand_space_indexes: Vec<usize> = vec![];
-
-    for x_index in 0..horizontal_len {
-        let is_only_space = (0..map.len()).all(|y_index| map[y_index][x_index] == Point::Space);
-
-        if is_only_space {
-            expand_space_indexes.push(x_index);
-        }
-    }
-
-    for (index, x_index) in expand_space_indexes.iter().enumerate() {
-        let modified_index = index + x_index + 1;
-        for y_index in 0..map.len() {
-            map[y_index].insert(modified_index, Point::Space);
-        }
+    UniverseImage {
+        map,
+        horizontal_lines,
+        vertical_lines,
     }
 }
 
-fn expand_horizontal_lines(map: &mut Vec<Vec<Point>>) {
+fn vertical_lines(map: &Vec<Vec<Point>>) -> Vec<usize> {
     let horizontal_len = map[0].len();
-    let mut expand_space_indexes: Vec<usize> = vec![];
 
-    for index in 0..map.len() {
-        let is_only_space = map[index].iter().all(|point| point == &Point::Space);
+    (0..horizontal_len)
+        .filter_map(|x_index| {
+            let is_only_space = (0..map.len()).all(|y_index| map[y_index][x_index] == Point::Space);
 
-        if is_only_space {
-            expand_space_indexes.push(index);
-        }
-    }
+            if is_only_space {
+                Option::Some(x_index)
+            } else {
+                Option::None
+            }
+        })
+        .collect()
+}
 
-    for (index, y_index) in expand_space_indexes.iter().enumerate() {
-        let modified_index = index + y_index + 1;
+fn horizontal_lines(map: &Vec<Vec<Point>>) -> Vec<usize> {
+    (0..map.len())
+        .filter_map(|index| {
+            let is_only_space = map[index].iter().all(|point| point == &Point::Space);
 
-        map.insert(modified_index, vec![Point::Space; horizontal_len])
-    }
+            if is_only_space {
+                Option::Some(index)
+            } else {
+                Option::None
+            }
+        })
+        .collect()
 }
