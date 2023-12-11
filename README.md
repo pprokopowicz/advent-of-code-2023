@@ -26,6 +26,7 @@ foo@bar:~$ cargo run -p day<day_number>
 - [08 - Haunted Wasteland](crates/day08)
 - [09 - Mirage Maintenance](crates/day09)
 - [10 - Pipe Maze](crates/day10)
+- [11 - Cosmic Expansion](crates/day11)
 
 ## Crates
 

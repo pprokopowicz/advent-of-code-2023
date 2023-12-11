@@ -16,7 +16,6 @@ pub fn solve(input: &mut Vec<Vec<Point>>) {
         current_coordinate = next;
         result += 1;
 
-
         input[current_coordinate.y][current_coordinate.x] =
             flipped_point(&input[current_coordinate.y][current_coordinate.x]);
 
